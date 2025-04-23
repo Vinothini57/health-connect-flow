@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,39 @@ export default function Login() {
     email: "",
     password: "",
   });
+
+  const demoAccounts = [
+    {
+      label: "Demo Doctor",
+      email: "doctor@demo.com",
+      password: "doctor123",
+      redirect: "/doctor/dashboard",
+    },
+    {
+      label: "Demo Patient",
+      email: "patient@demo.com",
+      password: "patient123",
+      redirect: "/dashboard",
+    },
+    {
+      label: "Demo Admin",
+      email: "admin@demo.com",
+      password: "admin123",
+      redirect: "/admin/dashboard",
+    }
+  ];
+
+  const handleDemoLogin = (acc: typeof demoAccounts[0]) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      toast({
+        title: `${acc.label} login successful`,
+        description: `Signed in as ${acc.email}`,
+      });
+      navigate(acc.redirect);
+    }, 1000);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -101,6 +133,22 @@ export default function Login() {
               <Link to="/register" className="text-health-blue font-medium hover:underline">
                 Create one now
               </Link>
+            </div>
+            
+            <div className="flex flex-col space-y-2 mb-4">
+              {demoAccounts.map((acc) => (
+                <Button
+                  key={acc.label}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-full flex items-center"
+                  onClick={() => handleDemoLogin(acc)}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Signing in..." : acc.label}
+                </Button>
+              ))}
             </div>
           </div>
         </div>

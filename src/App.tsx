@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +16,7 @@ import Messages from "./pages/Messages";
 import HealthRecords from "./pages/HealthRecords";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import MedicationReminder from "./pages/MedicationReminder";
 import { useState } from "react";
 
 const App = () => {
@@ -42,6 +42,7 @@ const App = () => {
             <Route path="/health-records" element={<HealthRecords />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/medication-reminder" element={<MedicationReminder />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

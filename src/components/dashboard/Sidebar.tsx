@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -17,6 +16,7 @@ import {
   ClipboardCheck,
   ShieldCheck,
   BarChart2,
+  Bell
 } from "lucide-react";
 
 interface SidebarProps {
@@ -112,6 +112,11 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
             name: "Dashboard",
             href: "/dashboard",
             icon: LayoutDashboard,
+          },
+          {
+            name: "Medication Reminder",
+            href: "/medication-reminder",
+            icon: Bell,
           },
           {
             name: "Appointments",

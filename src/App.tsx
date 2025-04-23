@@ -17,10 +17,11 @@ import HealthRecords from "./pages/HealthRecords";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import MedicationReminder from "./pages/MedicationReminder";
+import Patients from "./pages/Patients";
+import DoctorHealthRecords from "./pages/DoctorHealthRecords";
 import { useState } from "react";
 
 const App = () => {
-  // Create a client
   const [queryClient] = useState(() => new QueryClient());
 
   return (
@@ -43,6 +44,8 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/medication-reminder" element={<MedicationReminder />} />
+            <Route path="/patients" element={<Patients />} />
+            <Route path="/doctor/health-records" element={<DoctorHealthRecords />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

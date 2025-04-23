@@ -32,7 +32,6 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   
-  // Define different navigation items for each user type
   const getNavItems = () => {
     switch (userType) {
       case 'doctor':
@@ -59,7 +58,7 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
           },
           {
             name: "Health Records",
-            href: "/health-records",
+            href: "/doctor/health-records",
             icon: FileText,
           },
           {
@@ -149,7 +148,6 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
 
   const navItems = getNavItems();
   
-  // Function to determine which dashboard to redirect to
   const getDashboardPath = () => {
     switch (userType) {
       case 'doctor': return '/doctor/dashboard';
@@ -160,7 +158,6 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
 
   return (
     <>
-      {/* Mobile Menu Button */}
       <div className="lg:hidden fixed top-4 left-4 z-50">
         <Button
           variant="outline"
@@ -172,7 +169,6 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
         </Button>
       </div>
       
-      {/* Sidebar for mobile */}
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-40 w-64 transform bg-white shadow-lg transition-transform duration-200 ease-in-out lg:hidden",
@@ -227,7 +223,6 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
         </div>
       </div>
       
-      {/* Desktop Sidebar */}
       <div
         className={cn(
           "hidden lg:block h-full w-64 bg-white border-r border-gray-200",

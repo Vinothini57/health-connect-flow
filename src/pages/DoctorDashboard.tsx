@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -199,10 +198,10 @@ export default function DoctorDashboard() {
                   />
                   
                   <AppointmentCard 
-                    doctorName="Michael Johnson"
+                    doctorName="Sarah Williams"
                     specialty="Patient"
                     date="Today"
-                    time="3:30 PM"
+                    time="4:00 PM"
                     isUpcoming={true}
                   />
                 </div>

@@ -12,13 +12,19 @@ import {
   User,
   Menu,
   X,
+  Activity,
+  Users,
+  ClipboardCheck,
+  ShieldCheck,
+  BarChart2,
 } from "lucide-react";
 
 interface SidebarProps {
   className?: string;
+  userType?: 'patient' | 'doctor' | 'admin';
 }
 
-export default function Sidebar({ className }: SidebarProps) {
+export default function Sidebar({ className, userType = 'patient' }: SidebarProps) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
@@ -26,38 +32,126 @@ export default function Sidebar({ className }: SidebarProps) {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   
-  const navItems = [
-    {
-      name: "Dashboard",
-      href: "/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      name: "Appointments",
-      href: "/appointments",
-      icon: Calendar,
-    },
-    {
-      name: "Messages",
-      href: "/messages",
-      icon: MessageSquare,
-    },
-    {
-      name: "Health Records",
-      href: "/health-records",
-      icon: FileText,
-    },
-    {
-      name: "Profile",
-      href: "/profile",
-      icon: User,
-    },
-    {
-      name: "Settings",
-      href: "/settings",
-      icon: Settings,
-    },
-  ];
+  // Define different navigation items for each user type
+  const getNavItems = () => {
+    switch (userType) {
+      case 'doctor':
+        return [
+          {
+            name: "Dashboard",
+            href: "/doctor/dashboard",
+            icon: LayoutDashboard,
+          },
+          {
+            name: "Appointments",
+            href: "/appointments",
+            icon: Calendar,
+          },
+          {
+            name: "Patients",
+            href: "/patients",
+            icon: Users,
+          },
+          {
+            name: "Messages",
+            href: "/messages",
+            icon: MessageSquare,
+          },
+          {
+            name: "Health Records",
+            href: "/health-records",
+            icon: FileText,
+          },
+          {
+            name: "Profile",
+            href: "/profile",
+            icon: User,
+          },
+          {
+            name: "Settings",
+            href: "/settings",
+            icon: Settings,
+          },
+        ];
+      case 'admin':
+        return [
+          {
+            name: "Dashboard",
+            href: "/admin/dashboard",
+            icon: LayoutDashboard,
+          },
+          {
+            name: "User Management",
+            href: "/admin/users",
+            icon: Users,
+          },
+          {
+            name: "Doctor Verification",
+            href: "/admin/verification",
+            icon: ShieldCheck,
+          },
+          {
+            name: "System Logs",
+            href: "/admin/logs",
+            icon: ClipboardCheck,
+          },
+          {
+            name: "Analytics",
+            href: "/admin/analytics",
+            icon: BarChart2,
+          },
+          {
+            name: "Settings",
+            href: "/settings",
+            icon: Settings,
+          },
+        ];
+      default: // patient
+        return [
+          {
+            name: "Dashboard",
+            href: "/dashboard",
+            icon: LayoutDashboard,
+          },
+          {
+            name: "Appointments",
+            href: "/appointments",
+            icon: Calendar,
+          },
+          {
+            name: "Messages",
+            href: "/messages",
+            icon: MessageSquare,
+          },
+          {
+            name: "Health Records",
+            href: "/health-records",
+            icon: FileText,
+          },
+          {
+            name: "Profile",
+            href: "/profile",
+            icon: User,
+          },
+          {
+            name: "Settings",
+            href: "/settings",
+            icon: Settings,
+          },
+        ];
+    }
+  };
+
+  const navItems = getNavItems();
+  
+  // Function to determine which dashboard to redirect to
+  const getDashboardPath = () => {
+    switch (userType) {
+      case 'doctor': return '/doctor/dashboard';
+      case 'admin': return '/admin/dashboard';
+      default: return '/dashboard';
+    }
+  };
 
   return (
     <>
@@ -82,7 +176,7 @@ export default function Sidebar({ className }: SidebarProps) {
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-center h-16 border-b border-gray-200">
-            <Link to="/dashboard" className="flex items-center">
+            <Link to={getDashboardPath()} className="flex items-center">
               <span className="text-xl font-bold text-health-blue-dark">HealthConnect</span>
             </Link>
           </div>
@@ -113,11 +207,15 @@ export default function Sidebar({ className }: SidebarProps) {
           <div className="p-4 border-t border-gray-200">
             <div className="flex items-center">
               <div className="h-8 w-8 rounded-full bg-health-blue text-white flex items-center justify-center">
-                <span className="font-medium text-sm">JD</span>
+                <span className="font-medium text-sm">
+                  {userType === 'doctor' ? 'DR' : userType === 'admin' ? 'AD' : 'JD'}
+                </span>
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium">John Doe</p>
-                <p className="text-xs text-gray-500">Patient</p>
+                <p className="text-sm font-medium">
+                  {userType === 'doctor' ? 'Dr. Smith' : userType === 'admin' ? 'Admin' : 'John Doe'}
+                </p>
+                <p className="text-xs text-gray-500 capitalize">{userType}</p>
               </div>
             </div>
           </div>
@@ -133,7 +231,7 @@ export default function Sidebar({ className }: SidebarProps) {
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-center h-16 border-b border-gray-200">
-            <Link to="/dashboard" className="flex items-center">
+            <Link to={getDashboardPath()} className="flex items-center">
               <span className="text-xl font-bold text-health-blue-dark">HealthConnect</span>
             </Link>
           </div>
@@ -163,11 +261,15 @@ export default function Sidebar({ className }: SidebarProps) {
           <div className="p-4 border-t border-gray-200">
             <div className="flex items-center">
               <div className="h-8 w-8 rounded-full bg-health-blue text-white flex items-center justify-center">
-                <span className="font-medium text-sm">JD</span>
+                <span className="font-medium text-sm">
+                  {userType === 'doctor' ? 'DR' : userType === 'admin' ? 'AD' : 'JD'}
+                </span>
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium">John Doe</p>
-                <p className="text-xs text-gray-500">Patient</p>
+                <p className="text-sm font-medium">
+                  {userType === 'doctor' ? 'Dr. Smith' : userType === 'admin' ? 'Admin' : 'John Doe'}
+                </p>
+                <p className="text-xs text-gray-500 capitalize">{userType}</p>
               </div>
             </div>
           </div>

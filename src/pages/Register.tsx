@@ -20,8 +20,15 @@ export default function Register() {
     lastName: "",
     email: "",
     password: "",
-    userType: "patient", // patient or doctor
+    userType: "patient", // patient, doctor, or admin
     agreeToTerms: false,
+    // Doctor specific fields
+    specialty: "",
+    licenseNumber: "",
+    yearOfGraduation: "",
+    educationInstitution: "",
+    yearsOfExperience: "",
+    dateOfBirth: ""
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +61,14 @@ export default function Register() {
         title: "Registration successful",
         description: "Welcome to HealthConnect! Please complete your profile.",
       });
-      navigate("/onboarding");
+      
+      if (formData.userType === "patient") {
+        navigate("/onboarding");
+      } else if (formData.userType === "doctor") {
+        navigate("/doctor/dashboard");
+      } else if (formData.userType === "admin") {
+        navigate("/admin/dashboard");
+      }
     }, 1500);
   };
 
@@ -78,10 +92,21 @@ export default function Register() {
                 <div className={`flex items-center justify-center w-8 h-8 rounded-full ${step >= 2 ? 'bg-health-blue text-white' : 'bg-gray-200 text-gray-500'}`}>
                   2
                 </div>
+                {formData.userType === "doctor" && (
+                  <>
+                    <div className={`flex-1 h-1 mx-2 ${step >= 3 ? 'bg-health-blue' : 'bg-gray-200'}`}></div>
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-full ${step >= 3 ? 'bg-health-blue text-white' : 'bg-gray-200 text-gray-500'}`}>
+                      3
+                    </div>
+                  </>
+                )}
               </div>
               <div className="flex justify-between mt-2 text-xs">
                 <span className="text-health-blue">Account Type</span>
                 <span className={step >= 2 ? 'text-health-blue' : 'text-gray-500'}>Personal Info</span>
+                {formData.userType === "doctor" && (
+                  <span className={step >= 3 ? 'text-health-blue' : 'text-gray-500'}>Credentials</span>
+                )}
               </div>
             </div>
             
@@ -122,8 +147,8 @@ export default function Register() {
                   </Button>
                 </div>
               </form>
-            ) : (
-              <form onSubmit={handleSubmit}>
+            ) : step === 2 ? (
+              <form onSubmit={(e) => {e.preventDefault(); formData.userType === "doctor" ? setStep(3) : handleSubmit(e);}}>
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -177,6 +202,19 @@ export default function Register() {
                     />
                   </div>
                   
+                  <div className="space-y-2">
+                    <Label htmlFor="dateOfBirth">Date of Birth</Label>
+                    <Input
+                      id="dateOfBirth"
+                      name="dateOfBirth"
+                      type="date"
+                      required
+                      value={formData.dateOfBirth}
+                      onChange={handleChange}
+                      className="input-focus-within"
+                    />
+                  </div>
+                  
                   <div className="flex items-start space-x-2">
                     <Input
                       id="agreeToTerms"
@@ -196,7 +234,95 @@ export default function Register() {
                     className="w-full bg-health-blue hover:bg-health-blue-dark"
                     disabled={isLoading || !formData.agreeToTerms}
                   >
-                    {isLoading ? "Creating Account..." : "Create Account"}
+                    {formData.userType === "doctor" ? "Continue" : isLoading ? "Creating Account..." : "Create Account"}
+                    {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              // Doctor credentials step
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="specialty">Medical Specialty</Label>
+                    <Input
+                      id="specialty"
+                      name="specialty"
+                      required
+                      value={formData.specialty}
+                      onChange={handleChange}
+                      placeholder="e.g., Cardiologist, Pediatrician"
+                      className="input-focus-within"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="licenseNumber">Medical License Number</Label>
+                    <Input
+                      id="licenseNumber"
+                      name="licenseNumber"
+                      required
+                      value={formData.licenseNumber}
+                      onChange={handleChange}
+                      className="input-focus-within"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="educationInstitution">Medical School</Label>
+                    <Input
+                      id="educationInstitution"
+                      name="educationInstitution"
+                      required
+                      value={formData.educationInstitution}
+                      onChange={handleChange}
+                      placeholder="e.g., Harvard Medical School"
+                      className="input-focus-within"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="yearOfGraduation">Year of Graduation</Label>
+                      <Input
+                        id="yearOfGraduation"
+                        name="yearOfGraduation"
+                        required
+                        type="number"
+                        min="1950"
+                        max="2025"
+                        value={formData.yearOfGraduation}
+                        onChange={handleChange}
+                        className="input-focus-within"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="yearsOfExperience">Years of Experience</Label>
+                      <Input
+                        id="yearsOfExperience"
+                        name="yearsOfExperience"
+                        required
+                        type="number"
+                        min="0"
+                        max="70"
+                        value={formData.yearsOfExperience}
+                        onChange={handleChange}
+                        className="input-focus-within"
+                      />
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-gray-500 mt-4">
+                    Note: Your credentials will be verified by our admin team before your account is activated. This process usually takes 1-2 business days.
+                  </p>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-health-blue hover:bg-health-blue-dark"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Submitting Credentials..." : "Submit Credentials"}
                     {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
                   </Button>
                 </div>

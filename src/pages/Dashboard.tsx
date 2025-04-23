@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Sidebar from "@/components/dashboard/Sidebar";
@@ -6,7 +5,7 @@ import HealthMetricCard from "@/components/dashboard/HealthMetricCard";
 import HealthChart from "@/components/dashboard/HealthChart";
 import AppointmentCard from "@/components/dashboard/AppointmentCard";
 import { generateRandomData } from "@/lib/utils";
-import { Bell, Heart, Droplet, Activity, Thermometer, Plus, ArrowRight } from "lucide-react";
+import { Bell, Heart, Droplet, Activity, Thermometer, Plus, ArrowRight, MessageSquare } from "lucide-react";
 
 export default function Dashboard() {
   const [bloodPressureData] = useState(generateRandomData(7, 110, 145));

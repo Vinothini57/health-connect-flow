@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,14 +9,15 @@ export default function Messages() {
   const [activeChat, setActiveChat] = useState(0);
   const [message, setMessage] = useState("");
   
-  // Let's assume we're in patient view for now
-  const userType = 'patient';
-  
+  // Now using patient names for doctor's view
   const chats = [
-    { id: 0, name: "Dr. Sarah Johnson", role: "Cardiologist", avatar: "SJ", unread: 3, lastMessage: "Your blood pressure readings look good", lastTime: "10:30 AM" },
-    { id: 1, name: "Dr. Michael Chen", role: "Endocrinologist", avatar: "MC", unread: 0, lastMessage: "Remember to log your glucose levels", lastTime: "Yesterday" },
-    { id: 2, name: "Dr. Emily Williams", role: "Neurologist", avatar: "EW", unread: 0, lastMessage: "Your next appointment is scheduled for", lastTime: "Monday" }
+    { id: 0, name: "John Smith", role: "Patient", avatar: "JS", unread: 3, lastMessage: "Thank you doctor", lastTime: "10:30 AM" },
+    { id: 1, name: "Emma Wilson", role: "Patient", avatar: "EW", unread: 0, lastMessage: "Yes, I'll do that", lastTime: "Yesterday" },
+    { id: 2, name: "Michael Brown", role: "Patient", avatar: "MB", unread: 0, lastMessage: "When should I take the medicine?", lastTime: "Monday" }
   ];
+  
+    // Let's assume we're in patient view for now
+  const userType = 'patient';
   
   const messages = [
     { id: 1, sender: "doctor", content: "Good morning! How are you feeling today?", time: "9:30 AM" },

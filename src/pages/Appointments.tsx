@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -9,6 +8,13 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import Sidebar from "@/components/dashboard/Sidebar";
 import { Bell, Calendar as CalendarIcon, Clock, Video, Plus, X } from "lucide-react";
+
+// Mock patients data
+const mockPatients = [
+  { id: 1, name: "John Smith", email: "john@example.com" },
+  { id: 2, name: "Emma Wilson", email: "emma@example.com" },
+  { id: 3, name: "Michael Brown", email: "michael@example.com" },
+];
 
 interface Appointment {
   id: number;
@@ -24,6 +30,9 @@ export default function Appointments() {
   const [isNewAppointmentDialogOpen, setIsNewAppointmentDialogOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [selectedPatient, setSelectedPatient] = useState("");
+  const [appointmentType, setAppointmentType] = useState("video");
+  const [selectedTime, setSelectedTime] = useState("");
   
   const appointments: Appointment[] = [
     {
@@ -66,10 +75,18 @@ export default function Appointments() {
   });
   
   const handleBookAppointment = () => {
-    // Simulate API call
+    if (!selectedPatient || !selectedTime) {
+      toast({
+        title: "Error",
+        description: "Please select both a patient and time slot",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     toast({
-      title: "Appointment Requested",
-      description: "Your appointment request has been sent to the doctor.",
+      title: "Appointment Scheduled",
+      description: "The appointment has been scheduled successfully.",
     });
     setIsNewAppointmentDialogOpen(false);
   };
@@ -110,50 +127,38 @@ export default function Appointments() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
+      <Sidebar userType="doctor" />
       
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top header */}
         <header className="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
           <div>
-            <h1 className="text-xl font-bold text-gray-800">Appointments</h1>
-            <p className="text-sm text-gray-500">Manage your healthcare appointments</p>
+            <h1 className="text-xl font-bold text-gray-800">Schedule Appointments</h1>
+            <p className="text-sm text-gray-500">Manage your patient appointments</p>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-0 right-0 h-2 w-2 bg-health-red rounded-full"></span>
-            </Button>
-            
-            <Button 
-              onClick={() => setIsNewAppointmentDialogOpen(true)}
-              className="bg-health-blue hover:bg-health-blue-dark"
-              size="sm"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              New Appointment
-            </Button>
-          </div>
+          <Button 
+            onClick={() => setIsNewAppointmentDialogOpen(true)}
+            className="bg-health-blue hover:bg-health-blue-dark"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            New Appointment
+          </Button>
         </header>
         
-        {/* Main content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
-          <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center space-x-4">
-              <Label htmlFor="status-filter">Filter by status:</Label>
-              <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Appointments</SelectItem>
-                  <SelectItem value="upcoming">Upcoming</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="mb-6">
+            <Label>Filter by status:</Label>
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Appointments</SelectItem>
+                <SelectItem value="upcoming">Upcoming</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -259,15 +264,17 @@ export default function Appointments() {
           
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="doctor">Doctor</Label>
-              <Select>
-                <SelectTrigger id="doctor">
-                  <SelectValue placeholder="Select a doctor" />
+              <Label htmlFor="patient">Patient</Label>
+              <Select value={selectedPatient} onValueChange={setSelectedPatient}>
+                <SelectTrigger id="patient">
+                  <SelectValue placeholder="Select a patient" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="dr-johnson">Dr. Sarah Johnson (Cardiologist)</SelectItem>
-                  <SelectItem value="dr-chen">Dr. Michael Chen (Endocrinologist)</SelectItem>
-                  <SelectItem value="dr-rodriguez">Dr. Emily Rodriguez (Primary Care)</SelectItem>
+                  {mockPatients.map((patient) => (
+                    <SelectItem key={patient.id} value={patient.id.toString()}>
+                      {patient.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -279,40 +286,30 @@ export default function Appointments() {
                 selected={selectedDate}
                 onSelect={setSelectedDate}
                 className="border rounded-md p-3"
+                disabled={(date) => date < new Date() || date > new Date(new Date().setMonth(new Date().getMonth() + 2))}
               />
             </div>
             
             <div className="grid gap-2">
-              <Label htmlFor="time">Time</Label>
-              <Select>
+              <Label htmlFor="time">Available Time Slots</Label>
+              <Select value={selectedTime} onValueChange={setSelectedTime}>
                 <SelectTrigger id="time">
                   <SelectValue placeholder="Select a time" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="09:00">9:00 AM</SelectItem>
-                  <SelectItem value="09:30">9:30 AM</SelectItem>
                   <SelectItem value="10:00">10:00 AM</SelectItem>
-                  <SelectItem value="10:30">10:30 AM</SelectItem>
                   <SelectItem value="11:00">11:00 AM</SelectItem>
-                  <SelectItem value="11:30">11:30 AM</SelectItem>
                   <SelectItem value="14:00">2:00 PM</SelectItem>
-                  <SelectItem value="14:30">2:30 PM</SelectItem>
                   <SelectItem value="15:00">3:00 PM</SelectItem>
-                  <SelectItem value="15:30">3:30 PM</SelectItem>
                   <SelectItem value="16:00">4:00 PM</SelectItem>
-                  <SelectItem value="16:30">4:30 PM</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div className="grid gap-2">
-              <Label htmlFor="reason">Reason for Visit</Label>
-              <Input id="reason" placeholder="Briefly describe your symptoms or reason" />
-            </div>
-            
-            <div className="grid gap-2">
               <Label htmlFor="type">Appointment Type</Label>
-              <Select defaultValue="video">
+              <Select value={appointmentType} onValueChange={setAppointmentType}>
                 <SelectTrigger id="type">
                   <SelectValue />
                 </SelectTrigger>
@@ -329,7 +326,7 @@ export default function Appointments() {
               Cancel
             </Button>
             <Button onClick={handleBookAppointment} className="bg-health-blue hover:bg-health-blue-dark">
-              Book Appointment
+              Schedule Appointment
             </Button>
           </DialogFooter>
         </DialogContent>

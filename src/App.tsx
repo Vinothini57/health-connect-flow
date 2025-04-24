@@ -19,6 +19,12 @@ import Settings from "./pages/Settings";
 import MedicationReminder from "./pages/MedicationReminder";
 import Patients from "./pages/Patients";
 import DoctorHealthRecords from "./pages/DoctorHealthRecords";
+import DoctorProfile from "./pages/doctor/DoctorProfile";
+import DoctorAppointments from "./pages/doctor/DoctorAppointments";
+import DoctorMessages from "./pages/doctor/DoctorMessages";
+import PatientProfile from "./pages/patient/PatientProfile";
+import PatientAppointments from "./pages/patient/PatientAppointments";
+import PatientMessages from "./pages/patient/PatientMessages";
 import { useState } from "react";
 
 const App = () => {
@@ -46,6 +52,12 @@ const App = () => {
             <Route path="/medication-reminder" element={<MedicationReminder />} />
             <Route path="/patients" element={<Patients />} />
             <Route path="/doctor/health-records" element={<DoctorHealthRecords />} />
+            <Route path="/doctor/profile" element={<DoctorProfile />} />
+            <Route path="/doctor/appointments" element={<DoctorAppointments />} />
+            <Route path="/doctor/messages" element={<DoctorMessages />} />
+            <Route path="/patient/profile" element={<PatientProfile />} />
+            <Route path="/patient/appointments" element={<PatientAppointments />} />
+            <Route path="/patient/messages" element={<PatientMessages />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

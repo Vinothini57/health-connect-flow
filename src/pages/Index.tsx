@@ -1,12 +1,9 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import { ArrowRight, Activity, Calendar, Video, MessageSquare, Shield, Users } from "lucide-react";
-
 export default function Index() {
-  return (
-    <Layout>
+  return <Layout>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-health-blue to-health-blue-dark text-white py-20 overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22%3E%3Cpath fill=%22%23ffffff10%22 d=%22M364.61 390.77L286 317.14l27.79-27.79 78.86 73.88 140.78-140.78 27.67 28.06zM60.44 191.96L32 220.5l120.55 120.56 28.44-28.44L60.44 191.96z%22/%3E%3C/svg%3E')] bg-repeat bg-[length:64px_64px] opacity-10"></div>
@@ -28,7 +25,7 @@ export default function Index() {
                 </Button>
               </Link>
               <Link to="/features">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-white hover:bg-white/10 text-gray-600">
                   Learn More
                 </Button>
               </Link>
@@ -117,6 +114,5 @@ export default function Index() {
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 }

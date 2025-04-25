@@ -11,7 +11,7 @@ export default function PatientMessages() {
   
   const chats = [
     { id: 0, name: "Dr. Sarah Johnson", role: "Cardiologist", avatar: "SJ", unread: 2, lastMessage: "Take care!", lastTime: "10:30 AM" },
-    { id: 1, name: "Dr. Michael Chen", role: "Endocrinologist", avatar: "MC", unread: 0, lastMessage: "See you next week", lastTime: "Yesterday" },
+    { id: 1, name: "Dr. Michael Chen", role: "Endocrinologist", avatar: "MC", unread: 0, lastMessage: "See you next week", lastTime: "Yesterday" }
   ];
   
   const messages = [
@@ -53,7 +53,7 @@ export default function PatientMessages() {
               <div className="relative">
                 <Search className="h-4 w-4 absolute left-3 top-3 text-gray-400" />
                 <Input 
-                  placeholder="Search messages..." 
+                  placeholder="Search doctors..." 
                   className="pl-10"
                 />
               </div>
@@ -91,7 +91,7 @@ export default function PatientMessages() {
           
           <div className="flex-1 flex flex-col bg-gray-50">
             <div className="bg-white p-4 border-b border-gray-200 flex justify-between items-center">
-              {activeChat !== undefined && (
+              {activeChat !== undefined && chats[activeChat] && (
                 <>
                   <div className="flex items-center">
                     <div className="h-10 w-10 rounded-full bg-health-blue text-white flex items-center justify-center mr-3">

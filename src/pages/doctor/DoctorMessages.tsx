@@ -17,7 +17,7 @@ export default function DoctorMessages() {
   
   const messages = [
     { id: 1, sender: "doctor", content: "Good morning! How are you feeling today?", time: "9:30 AM" },
-    { id: 2, sender: "patient", content: "I'm feeling much better, thank you.", time: "9:32 AM" },
+    { id: 2, sender: "patient", content: "Much better, thank you doctor!", time: "9:32 AM" },
     { id: 3, sender: "doctor", content: "That's great to hear! Any side effects?", time: "9:35 AM" },
   ];
   
@@ -54,7 +54,7 @@ export default function DoctorMessages() {
               <div className="relative">
                 <Search className="h-4 w-4 absolute left-3 top-3 text-gray-400" />
                 <Input 
-                  placeholder="Search messages..." 
+                  placeholder="Search patients..." 
                   className="pl-10"
                 />
               </div>
@@ -92,7 +92,7 @@ export default function DoctorMessages() {
           
           <div className="flex-1 flex flex-col bg-gray-50">
             <div className="bg-white p-4 border-b border-gray-200 flex justify-between items-center">
-              {activeChat !== undefined && (
+              {activeChat !== undefined && chats[activeChat] && (
                 <>
                   <div className="flex items-center">
                     <div className="h-10 w-10 rounded-full bg-health-blue text-white flex items-center justify-center mr-3">

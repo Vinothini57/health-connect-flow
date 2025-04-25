@@ -43,7 +43,7 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
           },
           {
             name: "Appointments",
-            href: "/appointments",
+            href: "/doctor/appointments",
             icon: Calendar,
           },
           {
@@ -53,7 +53,7 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
           },
           {
             name: "Messages",
-            href: "/messages",
+            href: "/doctor/messages",
             icon: MessageSquare,
           },
           {
@@ -63,7 +63,7 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
           },
           {
             name: "Profile",
-            href: "/profile",
+            href: "/doctor/profile",
             icon: User,
           },
           {
@@ -119,12 +119,12 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
           },
           {
             name: "Appointments",
-            href: "/appointments",
+            href: "/patient/appointments",
             icon: Calendar,
           },
           {
             name: "Messages",
-            href: "/messages",
+            href: "/patient/messages",
             icon: MessageSquare,
           },
           {
@@ -134,7 +134,7 @@ export default function Sidebar({ className, userType = 'patient' }: SidebarProp
           },
           {
             name: "Profile",
-            href: "/profile",
+            href: "/patient/profile",
             icon: User,
           },
           {
